@@ -8,6 +8,10 @@ OData query string parser for node.js based on [pegjs](http://pegjs.majda.cz/).
 npm install odata-parser
 ```
 
+To re compile the parser run:
+
+node_modules/pegjs/bin/pegjs src/odata.pegjs lib/odata-parser.js
+
 ## Usage
 
 ```javascript
