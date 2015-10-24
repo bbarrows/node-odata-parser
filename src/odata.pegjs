@@ -259,10 +259,24 @@ filter                      =   "$filter=" list:filterExpr {
                                 }
                             /   "$filter=" .* { return {"error": 'invalid $filter parameter'}; }
 
+booleanOperation            = "and" / "or"
 filterExpr                  =
-                              "(" WSP? filterExpr WSP? ")" ( WSP ("and"/"or") WSP filterExpr)? /
-                              left:cond right:( WSP type:("and"/"or") WSP value:filterExpr{
-                                    return { type: type, value: value}
+                              "(" WSP* ov:filterExpr WSP* ")" or:( WSP it:booleanOperation WSP iv:filterExpr{
+                                    return { type: it, value: iv }
+                              })?{
+
+                                if (or) {
+                                    return {
+                                        type: or.type,
+                                        left: ov,
+                                        right: or.value
+                                    }
+                                } else {
+                                    return ov;
+                                }
+                              } /
+                              left:cond right:( WSP type:booleanOperation WSP value:filterExpr{
+                                    return { type: type, value: value }
                               })? {
 
                                 if (right) {
