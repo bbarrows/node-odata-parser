@@ -261,7 +261,7 @@ filter                      =   "$filter=" list:filterExpr {
 
 booleanOperation            = "and" / "or"
 filterExpr                  =
-                              "(" WSP* ov:filterExpr WSP* ")" or:( WSP it:booleanOperation WSP iv:filterExpr{
+                              "(" WSP* ov:filterExpr WSP* ")" or:( WSP* it:booleanOperation WSP* iv:filterExpr{
                                     return { type: it, value: iv }
                               })?{
 
@@ -275,7 +275,7 @@ filterExpr                  =
                                     return ov;
                                 }
                               } /
-                              left:cond right:( WSP type:booleanOperation WSP value:filterExpr{
+                              left:cond right:( WSP* type:booleanOperation WSP* value:filterExpr{
                                     return { type: type, value: value }
                               })? {
 
@@ -343,7 +343,7 @@ otherFunc2                 = f:otherFunctions2Arg "(" arg0:part "," WSP? arg1:pa
                                   }
                               }
 
-cond                        = a:part WSP op:op WSP b:part {
+cond                        = a:part WSP* op:op WSP* b:part {
                                     return {
                                         type: op,
                                         left: a,
